@@ -1,0 +1,21 @@
+<widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id = "ie.dkit.derek.qr_code">
+
+<name>Consumidor restaurante</name>
+<description>Consumidor resturante</description>
+<author email="nitroni45@gmail.com" href="http://www.nitroni.com">Consumidor restaurante</author>
+<icon src="icon.png" />
+<!-- Core plugins -->
+<gap:plugin name="org.apache.cordova.console" />
+<gap:plugin name="org.apache.cordova.device" />
+<gap:plugin name="org.apache.cordova.dialogs" />
+<gap:plugin name="org.apache.cordova.inappbrowser" />
+<gap:plugin name="org.apache.cordova.network-information" />
+<gap:plugin name="org.apache.cordova.splashscreen" />
+<!-- Third party plugins -->
+<!--note that third party plugins will require an associated .js file to be included in index.html -->
+<!--<gap:plugin name="com.phonegap.plugins.barcodescanner" />
+<access origin="*" />-->
+</widget>
+

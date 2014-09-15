@@ -1,0 +1,174 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>AppcIbono</title>
+	<link media="all" rel="stylesheet" href="css/jquery.mobile.1.3.1.min.css"/>
+	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
+	<link media="all" rel="stylesheet" href="css/styleapp.css"/>
+	<script src="js/jquery.1.9.1.min.js"></script>
+	<script src="core/core.js"></script>
+	<script src="js/jquery.mobile-1.3.1.min.js"></script>
+</head>
+<body> 
+<!-- login -->
+<div data-role="page" id="inicio" class="contenido">
+	<div data-role="content">			
+		<div class="logo" align="center"></div>
+		<br><br><br>	
+      			<div class="colortext"> Usuario </div>
+      			<input type="text" id="nombredeusuario" name="nombredeusuario">
+                <br>
+      			<div class="colortext"> Clave </div>
+     			<input type="password" id="clave" name="clave" >
+				<br>
+      			<input type="submit" value="Login" id="botonLogin" onclick="ValidarLogin();">         						
+	</div>	 
+</div>
+<!-- menu3 control de acceso-->
+<div data-role="page" id="scan" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Scannear QR</h1><div data-role="navbar" id="datoscontador" name="datoscontador">
+	<ul>
+	<li><a href="" id="datoscontador1">Entradas: 0</a></li>
+	<li><a href="" id="datoscontador2">Salidas: 0</a></li>
+    <li><a href="" id="datoscontador3">Total evento: 0</a></li>   	
+	</ul>
+</div>
+	</div> 
+	<div data-role="content">	
+		<button id = "scanButton" onclick="scanQR();">Scannear QR</button>
+		<p>
+		<div class="colortext">Numero de c&eacute;dula escaneada:</div>
+		<p>
+		<input type="text" value="" id="cedula" name="cedula" />
+		<p>
+		<div class="colortext">El usuario es valido?:</div>
+		<p>
+		<input type="text" value="" id="resultado" name="resultado" />	
+		<p>
+		<input type="submit" value="Cerrar sesi&oacute;n" id="cerrar" onclick="closeapp()"/>
+	</div>	
+</div>
+<!-- menu2 control de acceso-->
+<div data-role="page" id="menucontrolscan" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Control de acceso</h1><div data-role="navbar" id="datconuno" name="datconuno">
+	<ul>
+	<li><a href="" id="datconuno1">Entradas: 0</a></li>
+	<li><a href="" id="datconuno2">Salidas: 0</a></li>
+    <li><a href="" id="datconuno3">Total evento: 0</a></li>   	
+	</ul>
+</div>
+	</div>
+	<div data-role="content">	
+		<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">
+		<div class="ui-btn-inner ui-li">
+		<div class="ui-btn-text">
+		<a href="#scan" class="ui-link-inherit">Scannear c&oacute;digo QR</a>
+		</div>
+		</div>
+		</li>
+		<br>
+		<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">
+		<div class="ui-btn-inner ui-li">
+		<div class="ui-btn-text">
+		<a href="#ctvalcedula" class="ui-link-inherit">Validar c&eacute;dula del funcionario</a>
+		</div>
+		</div>
+		</li>
+		<br>
+		<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">
+		<div class="ui-btn-inner ui-li">
+		<div class="ui-btn-text" onClick="validaranonimo()">
+		<a href="" class="ui-link-inherit">Usuario anonimo</a>
+		</div>
+		</div>
+		</li>	
+		<br>
+		<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">
+		<div class="ui-btn-inner ui-li">
+		<div class="ui-btn-text">
+		<a href="#egresar" class="ui-link-inherit">Egresar usuarios</a>
+		</div>
+		</div>
+		</li>
+		<p>  
+		<input type="submit" value="Cerrar sesi&oacute;n" id="cerrar" onclick="closeapp()"/>
+	</div>	
+</div>
+<!-- home -->
+<div data-role="page" id="home" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Bienvenido</h1>
+	</div>
+    <br><br>
+    <div data-role="content" id="coreeventos" name ="coreenventos">	
+	<button id = "vcedu"  onclick="opcionservicio('+"'"+codigoservicio+"'"+',tiposervicio,'+"'"+nitproveedor+"'"+','+"'"+detcapaserv+"'"+');" class="ui-btn-text">Mis reservas</button>
+	<br>
+	<button id = "vcedu"  onclick="opcionservicio('+"'"+codigoservicio+"'"+',tiposervicio,'+"'"+nitproveedor+"'"+','+"'"+detcapaserv+"'"+');" class="ui-btn-text">Mis consumos</button>
+	</div>
+</div>
+<!-- menu1 control de acceso-->
+<div data-role="page" id="menucontrol" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Sus eventos son:</h1>
+	</div>
+	<div data-role="content">	
+		<br>
+		<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">
+		<div class="ui-btn-inner ui-li">
+		<div class="ui-btn-text">
+		<a href="#menucontrolscan" class="ui-link-inherit">Evento1</a>
+		</div>
+		</div>
+		</li>
+		<p><p>
+		<input type="submit" value="Cerrar sesi&oacute;n" id="cerrar" onclick="closeapp()"/>
+	</div>	
+</div>
+<!-- validar cédula -->
+<div data-role="page" id="ctvalcedula" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Validar c&eacute;dula</h1>
+	</div>    
+	<div data-role="content">	
+		<div class="colortext"> C&eacute;dula</div>
+		<div class="colortext"> C&eacute;dula</div>
+		<input type="number" id="numcedula" name="numcedula" size="17" maxlength="17">
+		<br>
+		<br>
+		<button id = "vcedu" onclick="validarcedula();">Confirmar c&eacute;dula</button>	
+	</div>	 
+</div>
+<!-- Egresar usuarios -->
+<div data-role="page" id="egresar" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Egresar usuarios</h1><div data-role="navbar" id="contegresar" name="contegresar">
+	<ul>
+		<li><a href="" id="contegresar1">Entradas: 0</a></li>
+		<li><a href="" id="contegresar2">Salidas: 0</a></li>
+		<li><a href="" id="contegresar3">Total evento: 0</a></li>
+	</ul>
+</div>
+	</div> 
+	<div data-role="content">	
+		<button id = "scanButton" onclick="egresarusuarios();">Egresar usuario</button>
+		<p><p>
+		<input type="submit" value="Cerrar sesi&oacute;n" id="cerrar" onclick="closeapp()"/>
+	</div>	
+</div>
+<!-- Detalle-->
+<div data-role="page" id="detalle" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Detalle del servicio</h1>
+	</div> 
+	<div data-role="content">	
+	<br>
+		<p class="colortext" id="detalle1">Fecha de inicio del servicio: </p><br>
+		<p class="colortext" id="detalle2">Fecha de finalización del servicio: </p><br>
+		<p class="colortext" id="detalle3">Capacidad: </p>
+	</div>	
+</div>
+</body>
+</html>

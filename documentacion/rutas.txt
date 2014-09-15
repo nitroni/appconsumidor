@@ -1,0 +1,6 @@
+http://181.48.24.156:8183/Servicios/api/Proveedor/Filter/?id=adminsx&clave=nexos1
+
+http://181.48.24.156:8183/Servicios/api/Consumidor/Filter/?usuario=jdblandon&clave=nexos1
+
+http://181.48.24.156:8183/Servicios/api/Registro/Add
+{"NitProveedor": 999999999.0,"CedConsumidor": 0,"CodServicio": "SRV001","FecEntrada": "01/01/2014 09:08:03","TipRegistro": "S","Message": null,"ConRegistro": 50, "CodProducto" : ""}
