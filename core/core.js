@@ -13,11 +13,17 @@ var detfechafinserv="";
 var detcapaserv="";
 var capservicio="";
 var conteventotal="";
+
+var siteCustomer = 'http://181.48.24.156:8183/ServiciosDesa/api';
+
 function ValidarLogin() {
 datosUsuario = $("#nombredeusuario").val();
 datosPassword = $("#clave").val();	
-
-/*var url='http://181.48.24.156:8183/Servicios/api/Consumidor/Filter/?id='+datosUsuario+'sx&clave='+datosPassword+'';		
+if(datosUsuario=="" || datosPassword==""){
+   alert("Los campos no pueden estar vacios");
+   return false;
+}
+var url=siteCustomer + '/Consumidor/Filter/?usuario='+datosUsuario+'&clave='+datosPassword+'';		
 	$.ajax({ // ajax call starts
           url: url, // JQuery loads serverside.php 
 		  type:"GET",
@@ -27,10 +33,10 @@ datosPassword = $("#clave").val();
           success: function(data) // Variable data contains the data we get from serverside
           {
 		      datosg=data;
-			  if(data.NomProveedor != null){
+			  if(data.NomConsumidor != null){
 			     $('#coreeventos').empty();
-				 $.mobile.changePage("#home");
-                  ListarEventos(data);		
+				 $.mobile.changePage("#menu");
+                  ListarComidas(data);		
 			  }
 			  else{
 				alert("El usuario o la clave no son validos");
@@ -39,27 +45,34 @@ datosPassword = $("#clave").val();
 		  error: function(data){
 		       alert("Los campos no pueden estar en blanco");
 		  }
-      });*/
-	  if (datosUsuario=="nexos" && datosPassword=="nexos"){
-	     $.mobile.changePage("#home");
-	  }
-	  
+      });
+	    
 }
+
+
+function ListarComidas(data){
+ var i=0;
+	 while (i < 5){
+		 
+		$("#coreeventos").append('<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><button id = "vcedu"  onclick="ConfirmarReserva();" class="ui-btn-text">Comida' + i +'</button></div></div></li><br>');     
+		  
+		 i=i+1;
+   }
+}
+
 function ListarEventos(data){
  var i=0;
-	 while (i < data.Servicios.length){
-		 NameServicio=data.Servicios[i].DesServicio;
-		 codigoservicio=data.Servicios[i].CodServicio;
-		 nitproveedor=data.Servicios[i].NitProveedor;
-		 detfechainiserv=data.Servicios[i].RanIniDisServicio;
-         detfechafinserv=data.Servicios[i].RanFinDisServicio;
-         detcapaserv=data.Servicios[i].CapServicio;
+	 while (i < data.Derechos.length){
+		 NameServicio=data.Derechos[i].DesServicio;
+		 codigoservicio=data.Derechos[i].CodServicio;
+		 nitproveedor=data.Derechos[i].NitProveedor;
+	
 		 tiposervicio="c";
 		  if(NameServicio=="Restaurante"){
 		     tiposervicio="r";
 		  }
 		  if (NameServicio !== null) {
-			  $("#coreeventos").append('<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><button id = "vcedu"  onclick="opcionservicio('+"'"+codigoservicio+"'"+',tiposervicio,'+"'"+nitproveedor+"'"+','+"'"+detcapaserv+"'"+');" class="ui-btn-text">'+NameServicio+'</button></div><button id = "vcedu"  onclick="detalleservicio('+"'"+detfechainiserv+"'"+','+"'"+detfechafinserv+"'"+','+"'"+detcapaserv+"'"+');" >Detalle</button></div></li><br>');     
+			  $("#coreeventos").append('<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><button id = "vcedu"  onclick="opcionservicio('+"'"+codigoservicio+"'"+',tiposervicio,'+"'"+nitproveedor+"'"+');" class="ui-btn-text">'+NameServicio+'</button></div></div></li><br>');     
 		  }
 		 i=i+1;
    }
@@ -79,7 +92,7 @@ function detalleservicio(fechainicio,fechafin,capacidad){
 	 $.mobile.changePage("#detalle");
 }
 function cargarcontador(cdv,tip) {
-var url='http://181.48.24.156:8183/Servicios/api/Proveedor/Filter/?id='+datosUsuario+'sx&clave='+datosPassword+'';	
+var url= siteCustomer + '/Proveedor/Filter/?id='+datosUsuario+'sx&clave='+datosPassword+'';	
 	$.ajax({ // ajax call starts
           url: url, // JQuery loads serverside.php 
 		  type:"GET",
@@ -133,7 +146,7 @@ var datosent=
    "CodProducto":""
 }
 //Se define la url del servicio
-var url='http://181.48.24.156:8183/Servicios/api/Registro/Add';	
+var url=siteCustomer + '/Registro/Add';	
 	$.ajax({ // ajax call starts
           url: url, // JQuery loads serverside
 		  type:"POST",
@@ -197,7 +210,7 @@ function validarcedula(){
 	   "ConRegistro":1,
 	   "CodProducto":""
 	}
-   var url='http://181.48.24.156:8183/Servicios/api/Registro/Add';	  
+   var url=siteCustomer + '/Registro/Add';	  
    $.ajax({ // ajax call starts
           url: url, // JQuery loads serverside
 		  type:"POST",
@@ -243,7 +256,7 @@ function validaranonimo(){
 	   "ConRegistro":1,
 	   "CodProducto":""
 	}
-   var url='http://181.48.24.156:8183/Servicios/api/Registro/Add';	
+   var url=siteCustomer + '/Registro/Add';	
    $.ajax({ // ajax call starts
           url: url, // JQuery loads serverside
 		  type:"POST",
@@ -288,7 +301,7 @@ function egresarusuarios(){
 	   "ConRegistro":1,
 	   "CodProducto":""
 	}
-   var url='http://181.48.24.156:8183/Servicios/api/Registro/Add';	
+   var url=siteCustomer + '/Registro/Add';	
    $.ajax({ // ajax call starts
           url: url, // JQuery loads serverside
 		  type:"POST",
@@ -327,4 +340,12 @@ function closeapp(){
     document.getElementById("nombredeusuario").value="";
 	document.getElementById("clave").value="";
     $.mobile.changePage("#inicio");
+}
+
+function ConfirmarReserva(){
+	$.mobile.changePage("#confirmarReserva");
+}
+
+function Reserva(){
+	$.mobile.changePage("#home");
 }

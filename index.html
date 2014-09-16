@@ -15,12 +15,13 @@
 <div data-role="page" id="inicio" class="contenido">
 	<div data-role="content">			
 		<div class="logo" align="center"></div>
-		<br><br><br>	
+		<br><br><br>
+<!--usuario=jdblandon&clave=986831	-->	
       			<div class="colortext"> Usuario </div>
-      			<input type="text" id="nombredeusuario" name="nombredeusuario">
+      			<input type="text" id="nombredeusuario" name="nombredeusuario" value="jdblandon">
                 <br>
       			<div class="colortext"> Clave </div>
-     			<input type="password" id="clave" name="clave" >
+     			<input type="password" id="clave" name="clave" value="986831" >
 				<br>
       			<input type="submit" value="Login" id="botonLogin" onclick="ValidarLogin();">         						
 	</div>	 
@@ -168,6 +169,39 @@
 		<p class="colortext" id="detalle1">Fecha de inicio del servicio: </p><br>
 		<p class="colortext" id="detalle2">Fecha de finalización del servicio: </p><br>
 		<p class="colortext" id="detalle3">Capacidad: </p>
+	</div>	
+</div>
+<!-- Menu-->
+<div data-role="page" id="menu" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Menu</h1>
+	</div> 
+	<div data-role="content">	
+	<br>
+    <div data-role="content">	
+	<button id = "vcedu"  onclick="Reserva();" class="ui-btn-text">Reservas</button>
+	<br>
+	<button id = "vcedu"  onclick="Historico();" class="ui-btn-text">Historial</button>
+	</div>
+	</div>	
+</div>
+
+<!-- Confirmar Reserva-->
+<div data-role="page" id="confirmarReserva" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Confirmar Reserva</h1>
+	</div> 
+	<div data-role="content">	
+	<br>
+    <div data-role="content">	
+	Seleccionar Fecha:
+	<input type="date" name="fecha">
+	<p>Comida 1</p>
+	<p>Ingredientes: item 4, item 3, item 2</p>
+	<button id = "vcedu"  onclick="confirmarReserva();" class="ui-btn-text">Confirmar</button>
+	<br>
+	<button id = "vcedu"  onclick="closeapp();" class="ui-btn-text">Cerrar</button>
+	</div>
 	</div>	
 </div>
 </body>
