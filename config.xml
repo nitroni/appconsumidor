@@ -1,14 +1,14 @@
 <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id = "ie.dkit.derek.qr_code">
+        id = "com.nexosapp.ibonocomsumidor">
 
-<name>Consumidor restaurante</name>
-<description>Consumidor resturante</description>
-<author email="nitroni45@gmail.com" href="http://www.nitroni.com">Consumidor restaurante</author>
+<name>IBono Consumidor</name>
+<description>IBono Consumidor</description>
+<author email="avelez@nexos-software.com.co" href="http://www.nexos-software.com.co">IBono Consumidor</author>
 <icon src="icon.png" />
+<content src="index.html" />
 
-
-<gap:platform name="ios" />
+  <gap:platform name="ios" />
 <gap:platform name="android" />
 
 <!-- Core plugins -->
@@ -18,9 +18,9 @@
 <gap:plugin name="org.apache.cordova.inappbrowser" />
 <gap:plugin name="org.apache.cordova.network-information" />
 <gap:plugin name="org.apache.cordova.splashscreen" />
-<!-- Third party plugins -->
-<!--note that third party plugins will require an associated .js file to be included in index.html -->
-<!--<gap:plugin name="com.phonegap.plugins.barcodescanner" />
-<access origin="*" />-->
+
+<access origin="http://181.48.24.156:8183" />
+
+  
 </widget>
 
