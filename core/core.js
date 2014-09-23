@@ -20,13 +20,21 @@ var fechasReservasValidas = {};
 var DataTemp = {};
 
 
-var siteCustomer = 'http://181.48.24.156:8183/ServiciosDesa/api';
+var siteCustomer = 'http://181.48.24.156:8183/Servicios/api';
 
 window.onhashchange = function () {
     if (isAuth == false) {
         document.location.href = "#inicio";
     }
 }
+
+//Definimos que la aplicación no tendrá efectos de transición para que funcione más rapido
+$(document).bind("mobileinit", function(){
+    $.event.special.swipe.scrollSupressionThreshold = 100;
+	$.mobile.defaultPageTransition="none";
+	$.mobile.transitionFallbacks='none';
+	$.mobile.defaultDialogTransition = 'none';	
+});
 
 function ValidarLogin() {
 datosUsuario = $("#nombredeusuario").val();
@@ -100,8 +108,6 @@ function ListarComidas(data){
 
 function ListarEventos(data){
     var i = 0;
-   
-
 	 while (i < data.Derechos.length){
 		 NameServicio=data.Derechos[i].DesServicio;
 		 codigoservicio=data.Derechos[i].CodServicio;
