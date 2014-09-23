@@ -43,7 +43,6 @@ if(datosUsuario=="" || datosPassword==""){
    alert("Los campos no pueden estar vacios");
    return false;
 }
-
 var url=siteCustomer + '/Consumidor/Filter/?usuario='+datosUsuario+'&clave='+datosPassword+'';
 $.ajax({ // ajax call starts
     url: url, // JQuery loads serverside.php 
@@ -64,11 +63,11 @@ $.ajax({ // ajax call starts
 
                 }
                 else {
-                    alert("El usuario o la clave no son validos");
+                    alert("El usuario o la clave no son válidos");
                 }
     },
     error: function (data) {
-        alert("Los campos no pueden estar en blanco");
+        alert("Error en la conexión");
     }
 });
 	    
@@ -277,14 +276,14 @@ function validarcedula(){
 				  $('.cont').empty();
 				  updatecounter(data.ConEntradasServicio,data.ConSalidasServicio);
 				  estado='si';
-				  alert("La cédula es valida");
+				  alert("La cédula es válida");
 			  
 			  if(conteventotal>capservicio){
 			      capacidadevento(capservicio);
 			  }			  
           },
 		  error: function(data){
-			  alert("La cédula "+cedula+" no es valida");
+			  alert("La cédula "+cedula+" no es válida");
 		  }
       });
 }
@@ -329,7 +328,7 @@ function validaranonimo(){
 			  }	
           },
 		  error: function(data){
-		       alert("Error de conexión al servidor");
+		       alert("Error en la conexión");
 		  }
       });
 }
@@ -374,7 +373,7 @@ function egresarusuarios(){
 			  }	
           },
 		  error: function(data){
-		       alert("Error de conexión al servidor");
+		       alert("Error en la conexión");
 		  }
       });
 }
@@ -554,7 +553,7 @@ function GuardarReserva() {
             alert('La reserva se realizo con éxito');
         },
         error: function (data) {
-            alert("Error de conexión al servidor");
+            alert("Error en la conexión");
         }
     });
 }
