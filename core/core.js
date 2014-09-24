@@ -441,7 +441,6 @@ function Servicios() {
 
         numRows  += 1;
     }
-
     $.mobile.changePage("#ServiciosDisponibles");
 }
 
@@ -452,7 +451,7 @@ function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServici
     var fechaSistema = new Date();
     var fechaActual = fechaSistema.getFullYear() + '' + ("0" + (fechaSistema.getMonth() + 1)).slice(-2) + '' + fechaSistema.getDate();
 
-    var fechaIni = ExtraerFecha(RanFinDisServicio);
+    var fechaIni = ExtraerFecha(RanIniDisServicio);
     var fechaFin = ExtraerFecha(RanFinDisServicio);
 
     var isValid = ComparFechasVersion2(fechaActual, fechaIni, fechaFin);
@@ -557,7 +556,6 @@ function GuardarReserva() {
         }
     });
 }
-
 
 function ExtraerHora(horaconver) {
 
@@ -683,4 +681,3 @@ function ListarHistorico(dataHistorico) {
             $("#verHistorico").append(crearItem);      
      };
     }
-
