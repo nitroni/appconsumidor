@@ -13,12 +13,10 @@ var detfechafinserv="";
 var detcapaserv="";
 var capservicio="";
 var conteventotal = "";
-
 var isAuth = false;
 var seleccionReserva = {};
 var fechasReservasValidas = {};
 var DataTemp = {};
-
 
 var siteCustomer = 'http://181.48.24.156:8183/Servicios/api';
 
@@ -27,7 +25,6 @@ window.onhashchange = function () {
         document.location.href = "#inicio";
     }
 }
-
 //Definimos que la aplicación no tendrá efectos de transición para que funcione más rapido
 $(document).bind("mobileinit", function(){
     $.event.special.swipe.scrollSupressionThreshold = 100;
@@ -35,44 +32,42 @@ $(document).bind("mobileinit", function(){
 	$.mobile.transitionFallbacks='none';
 	$.mobile.defaultDialogTransition = 'none';	
 });
-
 function ValidarLogin() {
-datosUsuario = $("#nombredeusuario").val();
-datosPassword = $("#clave").val();	
-if(datosUsuario=="" || datosPassword==""){
-   alert("Los campos no pueden estar vacios");
-   return false;
-}
-var url=siteCustomer + '/Consumidor/Filter/?usuario='+datosUsuario+'&clave='+datosPassword+'';
-$.ajax({ // ajax call starts
-    url: url, // JQuery loads serverside.php 
-    type: "GET",
-    dataType: 'json', // Choosing a JSON datatype
-    timeout: 5000,
-    crossDomain: true,
-    success: function (data) // Variable data contains the data we get from serverside
-    {
-        //alert('sucess');
-                datosg = data;
-                if (data.NomConsumidor != null) {
-
-                    $('#coreeventos').empty();
-                    $.mobile.changePage("#menu");
-
-                    isAuth = true;          
-
-                }
-                else {
-                    alert("El usuario o la clave no son válidos");
-                }
-    },
-    error: function (data) {
-        alert("Error en la conexión");
+	datosUsuario = $("#nombredeusuario").val();
+	datosPassword = $("#clave").val();	
+	if(datosUsuario=="" || datosPassword==""){
+	   alert("Los campos no pueden estar vacios");
+	   return false;
     }
-});
+	var url=siteCustomer + '/Consumidor/Filter/?usuario='+datosUsuario+'&clave='+datosPassword+'';
+	$.ajax({ // ajax call starts
+		url: url, // JQuery loads serverside.php 
+		type: "GET",
+		dataType: 'json', // Choosing a JSON datatype
+		timeout: 5000,
+		crossDomain: true,
+		success: function (data) // Variable data contains the data we get from serverside
+		{
+			//alert('sucess');
+					datosg = data;
+					if (data.NomConsumidor != null) {
+
+						$('#coreeventos').empty();
+						$.mobile.changePage("#menu");
+
+						isAuth = true;          
+
+					}
+					else {
+						alert("El usuario o la clave no son válidos");
+					}
+		},
+		error: function (data) {
+			alert("Error en la conexión");
+		}
+	});
 	    
 }
-
 
 function ListarComidas(data){
     var i = 0;
@@ -446,7 +441,6 @@ function Servicios() {
 
 
 function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServicio, RanIniDisConsumo, RanIniDisServicio, CanAsignada) {
-
     //Se válida la fecha
     var fechaSistema = new Date();
     var fechaActual = fechaSistema.getFullYear() + '' + ("0" + (fechaSistema.getMonth() + 1)).slice(-2) + '' + fechaSistema.getDate();
@@ -498,14 +492,27 @@ function GuardarReserva() {
     };
 
     var fechaReservaTemp = new Date(fechaReserva);
-    
+    //var fechaReservaTemp =fechaReserva;
+	
+	
+	
     // Validar Rango de Fecha Reservada
     var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
-
+    var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
+	
+	 alert("fecha escojida para la reserva henry="+fechaReserva+" hora reserva="+horareservas);
+	
     var fechaIni = ExtraerFecha(fechasReservasValidas.RanIniDisConsumo);
+	alert("fecha inicial="+fechaIni);
+	
     var fechaFin = ExtraerFecha(fechasReservasValidas.RanFinDisConsumo);
-
+     alert("fecha final="+fechaFin);
+	 
+	 
     var isValid = ComparFechasVersion2(fechaReserva, fechaIni, fechaFin);
+	
+	
+	alert("fecha de reserva="+isValid);
 
     if (!isValid) {
         alert('El menú solo se puede reservar entre el ' + getDateString(fechasReservasValidas.RanIniDisConsumo) + ' y el ' + getDateString(fechasReservasValidas.RanFinDisConsumo));
@@ -513,19 +520,31 @@ function GuardarReserva() {
     }
 
     // Validar Rango de Hora Reserva
-    var horaReservaTemp = ExtraerHora(fechaReservaTemp);
+	alert("fecha temporal="+fechaReservaTemp);
+	//Hora actual
+    //var horaReservaTemp = ExtraerHora(fechaReservaTemp);
+	
     var horaIni = ExtraerHora(fechasReservasValidas.RanIniDisConsumo);
     var horaFin = ExtraerHora(fechasReservasValidas.RanFinDisConsumo);
-
-    var isValid = ComparFechasVersion2(horaReservaTemp, horaIni, horaFin);
-
+	
+	alert("fecha inicio="+horaIni+" fecha final="+horaFin);
+    var isValid = ComparFechasVersion2(horareservas, horaIni, horaFin);
+    alert("resultado horas="+isValid+" hora de reserva="+horareservas+" hora inicial="+horaIni+" hora final="+horaFin);
+	
+	var isValidh = CompararHora(fechaReserva,fechaFin,fechaIni,horaFin,horaIni,horareservas);
+	alert("resultado2 horas="+isValidh+" hora de reserva="+horareservas+" hora inicial="+horaIni+" hora final="+horaFin+" fechafinal="+fechaFin+" fecha inicial="+fechaIni+" fecha reserva="+fechaReserva);
+	
+	
     if (!isValid) {
         alert('El menú solo se puede reservar entre las horas: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) + ' y ' + getHourString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
 
     var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaReserva + ':00';
-
+     
+	 alert("confirmar fecha="+confirmarfechaReserva);
+	
+	
     var datosReserva = {
         "NitProveedor": seleccionReserva.NitProveedor,
         "CedConsumidor": seleccionReserva.CedConsumidor,
@@ -534,7 +553,9 @@ function GuardarReserva() {
         "FecReserva": confirmarfechaReserva,
         "NumReservas": 1,
         "Message": null}
-
+   
+    alert("llego a guardar el consumidor");
+	
     var url = siteCustomer + '/Reserva/Add';
     $.ajax({ // ajax call starts
         url: url, // JQuery loads serverside
@@ -558,14 +579,14 @@ function GuardarReserva() {
 }
 
 function ExtraerHora(horaconver) {
-
-    var horavl = horaconver.getHours() + horaconver.getMinutes() + "00";
+    alert("hora a convertir="+horaconver);
+    //var horavl = horaconver.getHours() + horaconver.getMinutes() + "00";
     //sacar hora
-//    var dathoras = horaconver.split(":");
-//    var segini = dathoras[2];
-//    var minini = dathoras[1];
-//    var hini = dathoras[0].substring(13, 11);
-//    var horavl = hini + minini + segini;
+    var dathoras = horaconver.split(":");
+    var segini = dathoras[2];
+    var minini = dathoras[1];
+    var hini = dathoras[0].substring(13, 11);
+    var horavl = hini + minini + segini;
     
     return horavl;
 }
@@ -601,6 +622,47 @@ function ComparFechasVersion2(fechaActual, fechaIni, fechaFin) {
     return isValid;
 }
 
+function CompararHora(fechareservacomh,fechafinal,fechainicial,horafinal,horainicial,horareservacomh) {
+
+    var isValid = false;
+    alert("fecha reserva="+fechareservacomh+" === fecha inicial="+fechainicial);
+    if(fechareservacomh==fechafinal){
+	   if(horareservacomh>horafinal){
+	      isValid= false;
+	   } 
+	   if(horareservacomh<=horafinal){
+	      isValid= true;
+	   }			
+	}
+	if(fechareservacomh==fechainicial){
+	alert("entro aca");
+	  if(horareservacomh < horainicial){
+	  alert("la hora de reserva es menor");
+	     isValid= false;
+	   }
+	   if(horareservacomh >= horainicial){
+	     alert("la hora de reserva es igual y mayor");
+	     isValid= true;
+	   }
+	}
+	if(fechareservacomh < fechafinal && fechareservacomh > fechainicial){
+	   if(horareservacomh > horafinal){
+	      isValid= false;
+	   } 
+	   if(horareservacomh<=horafinal){
+	      isValid= true;
+	   }
+	}
+	if(fechareservacomh > fechainicial && fechareservacomh < fechafinal){
+	  if(horareservacomh < horainicial){
+	     isValid= false;
+	   }
+	   if(horareservacomh >= horainicial){
+	     isValid= true;
+	   }
+	}
+    return isValid;
+}
 function ExtraerHoraVersion2(horaconver) {
     //sacar hora
     var dathoras = horaconver.getMinutes;
