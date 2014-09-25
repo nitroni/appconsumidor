@@ -712,4 +712,4 @@ function ListarHistorico(dataHistorico) {
 
             $("#verHistorico").append(crearItem);      
      };
-    }
+}
