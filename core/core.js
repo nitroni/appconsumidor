@@ -72,7 +72,7 @@ function ValidarLogin() {
 function ListarComidas(data){
     var i = 0;
     $("#coreeventos").empty();
-
+alert("cedula2="+data['CedConsumidor']);
  while (i < data.length) {     
 
          var datosReserva = {
@@ -81,6 +81,7 @@ function ListarComidas(data){
                CodServicio: data[i].CodServicio,
                CodProducto: data[i].CodProducto
            };
+		   alert("cedula="+data[0]['CedConsumidor']);
 
            // '<img src="comida.jpg" style="width:200px;heigth:200px" />' +
 
@@ -386,7 +387,7 @@ function closeapp(){
 }
 
 function ConfirmarReserva(NitProveedor, CedConsumidor, CodServicio, CodProducto, Producto, Img, CanAsignada, ConReservasServicioConsumidor) {
-
+    alert("la cedula consumidor="+CedConsumidor);
     if (ConReservasServicioConsumidor == CanAsignada) {
         alert('La reserva ya ha sido asignada');
         return false;
@@ -470,6 +471,8 @@ function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServici
         success: function (data) // Variable data contains the data we get from serverside
         {
             //DataTemp = data;
+			
+			alert("cedula full="+data.CedConsumidor[0]);
             ListarComidas(data);
         },
         error: function (data) {
@@ -486,7 +489,7 @@ function GuardarReserva() {
     var fechaReserva = $("#date3").val();
 	
 	//validando hora
-    var horaReserva = $("#horaReserva").val();
+    //var horaReserva = $("#horaReserva").val();
 
     if (fechaReserva == "" ) {
         alert('La fecha y hora de la reserva no esta seleccionado');
@@ -501,6 +504,7 @@ function GuardarReserva() {
     // Validar Rango de Fecha Reservada
     var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
     var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
+	var horaenvioreserva= ("0" + (fechaReservaTemp.getHours())).slice(-2)+':'+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+':'+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
 	
     var fechaIni = ExtraerFecha(fechasReservasValidas.RanIniDisConsumo);	
     var fechaFin = ExtraerFecha(fechasReservasValidas.RanFinDisConsumo); 
@@ -529,7 +533,7 @@ function GuardarReserva() {
         return false;
     }
 
-    var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaReserva + ':00';
+    var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaenvioreserva;
      
 	 alert("confirmar reserva="+confirmarfechaReserva);
 	
