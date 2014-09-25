@@ -484,7 +484,9 @@ function GuardarReserva() {
 
     // Validar Fecha Reserva Ingresada
     var fechaReserva = $("#date3").val();
-    //var horaReserva = $("#horaReserva").val();
+	
+	//validando hora
+    var horaReserva = $("#horaReserva").val();
 
     if (fechaReserva == "" ) {
         alert('La fecha y hora de la reserva no esta seleccionado');
@@ -500,19 +502,9 @@ function GuardarReserva() {
     var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
     var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
 	
-	 alert("fecha escojida para la reserva henry="+fechaReserva+" hora reserva="+horareservas);
-	
-    var fechaIni = ExtraerFecha(fechasReservasValidas.RanIniDisConsumo);
-	alert("fecha inicial="+fechaIni);
-	
-    var fechaFin = ExtraerFecha(fechasReservasValidas.RanFinDisConsumo);
-     alert("fecha final="+fechaFin);
-	 
-	 
+    var fechaIni = ExtraerFecha(fechasReservasValidas.RanIniDisConsumo);	
+    var fechaFin = ExtraerFecha(fechasReservasValidas.RanFinDisConsumo); 
     var isValid = ComparFechasVersion2(fechaReserva, fechaIni, fechaFin);
-	
-	
-	alert("fecha de reserva="+isValid);
 
     if (!isValid) {
         alert('El menú solo se puede reservar entre el ' + getDateString(fechasReservasValidas.RanIniDisConsumo) + ' y el ' + getDateString(fechasReservasValidas.RanFinDisConsumo));
@@ -520,30 +512,28 @@ function GuardarReserva() {
     }
 
     // Validar Rango de Hora Reserva
-	alert("fecha temporal="+fechaReservaTemp);
 	//Hora actual
     //var horaReservaTemp = ExtraerHora(fechaReservaTemp);
 	
     var horaIni = ExtraerHora(fechasReservasValidas.RanIniDisConsumo);
     var horaFin = ExtraerHora(fechasReservasValidas.RanFinDisConsumo);
 	
-	alert("fecha inicio="+horaIni+" fecha final="+horaFin);
-    var isValid = ComparFechasVersion2(horareservas, horaIni, horaFin);
-    alert("resultado horas="+isValid+" hora de reserva="+horareservas+" hora inicial="+horaIni+" hora final="+horaFin);
+    //var isValid = ComparFechasVersion2(horareservas, horaIni, horaFin);
 	
 	var isValidh = CompararHora(fechaReserva,fechaFin,fechaIni,horaFin,horaIni,horareservas);
 	alert("resultado2 horas="+isValidh+" hora de reserva="+horareservas+" hora inicial="+horaIni+" hora final="+horaFin+" fechafinal="+fechaFin+" fecha inicial="+fechaIni+" fecha reserva="+fechaReserva);
 	
 	
-    if (!isValid) {
+    if (!isValidh) {
         alert('El menú solo se puede reservar entre las horas: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) + ' y ' + getHourString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
 
     var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaReserva + ':00';
      
-	 alert("confirmar fecha="+confirmarfechaReserva);
+	 alert("confirmar reserva="+confirmarfechaReserva);
 	
+	alert("nit="+seleccionReserva.NitProveedor+" CedConsumidor="+seleccionReserva.CedConsumidor+" codservicio="+seleccionReserva.CodServicio+" CodProducto="+seleccionReserva.CodProducto+" fecha reserva="+confirmarfechaReserva);
 	
     var datosReserva = {
         "NitProveedor": seleccionReserva.NitProveedor,
@@ -625,7 +615,6 @@ function ComparFechasVersion2(fechaActual, fechaIni, fechaFin) {
 function CompararHora(fechareservacomh,fechafinal,fechainicial,horafinal,horainicial,horareservacomh) {
 
     var isValid = false;
-    alert("fecha reserva="+fechareservacomh+" === fecha inicial="+fechainicial);
     if(fechareservacomh==fechafinal){
 	   if(horareservacomh>horafinal){
 	      isValid= false;
@@ -635,17 +624,14 @@ function CompararHora(fechareservacomh,fechafinal,fechainicial,horafinal,horaini
 	   }			
 	}
 	if(fechareservacomh==fechainicial){
-	alert("entro aca");
 	  if(horareservacomh < horainicial){
-	  alert("la hora de reserva es menor");
 	     isValid= false;
 	   }
 	   if(horareservacomh >= horainicial){
-	     alert("la hora de reserva es igual y mayor");
 	     isValid= true;
 	   }
 	}
-	if(fechareservacomh < fechafinal && fechareservacomh > fechainicial){
+	if(fechareservacomh < fechainicial && fechareservacomh != fechainicial){
 	   if(horareservacomh > horafinal){
 	      isValid= false;
 	   } 
@@ -653,13 +639,8 @@ function CompararHora(fechareservacomh,fechafinal,fechainicial,horafinal,horaini
 	      isValid= true;
 	   }
 	}
-	if(fechareservacomh > fechainicial && fechareservacomh < fechafinal){
-	  if(horareservacomh < horainicial){
-	     isValid= false;
-	   }
-	   if(horareservacomh >= horainicial){
-	     isValid= true;
-	   }
+	if(fechareservacomh > fechainicial && fechareservacomh != fechafinal){
+	   isValid= true;
 	}
     return isValid;
 }
