@@ -516,7 +516,7 @@ function GuardarReserva() {
 	var isValidh = CompararHora(fechaReserva,fechaFin,fechaIni,horaFin,horaIni,horareservas);
 	
     if (!isValidh) {
-        alert('El menú solo se puede reservar entre las horas: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) + ' y ' + getHourString(fechasReservasValidas.RanFinDisConsumo));
+        alert('El menú solo se puede reservar entre la hora: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) +' de la fecha '+ getDateString(fechasReservasValidas.RanFinDisConsumo)+' y hora: ' + getHourString(fechasReservasValidas.RanFinDisConsumo)+" de la fecha: "+getDateString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
     var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaenvioreserva;
@@ -668,7 +668,8 @@ function mostrarImagen(imgpro) {
 
 function Historico() { 
 
-    var url = siteCustomer + '/Reserva/FilterH/?nit=999999999&codServicio=SRV002&cedConsumidor=713999';
+    var url = siteCustomer + '/Reserva/FilterH/?nit='+dataGlobal.NitProveedor+'&codServicio=&cedConsumidor='+dataGlobal.CedConsumidor;
+	
     $.ajax({ // ajax call starts
         url: url, // JQuery loads serverside.php 
         type: "GET",
