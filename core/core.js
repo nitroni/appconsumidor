@@ -406,6 +406,7 @@ function ConfirmarReserva(NitProveedor, CedConsumidor, CodServicio, CodProducto,
 
 function Servicios() {
     var numRows = 0;
+	$.mobile.changePage("#ServiciosDisponibles");
     $("#serviciosDisponiblesList").empty();
 
     while (numRows < datosg.Derechos.length) {
@@ -415,7 +416,7 @@ function Servicios() {
             var crearItem = '<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">' +
                 '<div class="ui-btn-inner ui-li">' +
                 '<div class="ui-btn-text">' + datosg.Derechos[numRows].DesServicio +
-                '<button id = "vcedu"  onclick="verMenus(' + "'" + 
+                '<br><button id = "vcedu"  onclick="verMenus(' + "'" + 
                  datosg.Derechos[numRows].CedConsumidor + "','" +
                  datosg.Derechos[numRows].CodServicio + "','" +
                  datosg.Derechos[numRows].RanFinDisConsumo + "','" +
@@ -423,7 +424,7 @@ function Servicios() {
                  datosg.Derechos[numRows].RanIniDisConsumo + "','" +
                  datosg.Derechos[numRows].RanIniDisServicio + "','" +
                  datosg.Derechos[numRows].CanAsignada + "'" +
-                 ');" class="ui-btn-text">Reservar</button>' +
+                 ');" style="background-color: #fff;font-size: 16px;clear: left;height: 35px;width: 100%;margin-right: 10px;padding: 5px; float: center;border-width: 1px;border-color: #7f7f7f;border-style: dashed;">Reservar</button>' +
                 '</div>' +
                 '</div>' +
                 '</li>' +
@@ -433,8 +434,7 @@ function Servicios() {
         }  
 
         numRows  += 1;
-    }
-    $.mobile.changePage("#ServiciosDisponibles");
+    }   
 }
 
 function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServicio, RanIniDisConsumo, RanIniDisServicio, CanAsignada) {
