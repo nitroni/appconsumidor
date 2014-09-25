@@ -17,7 +17,7 @@ var isAuth = false;
 var seleccionReserva = {};
 var fechasReservasValidas = {};
 var DataTemp = {};
-
+var dataGlobal="";
 var siteCustomer = 'http://181.48.24.156:8183/Servicios/api';
 
 window.onhashchange = function () {
@@ -51,12 +51,10 @@ function ValidarLogin() {
 			//alert('sucess');
 					datosg = data;
 					if (data.NomConsumidor != null) {
-
+                         dataGlobal=data;
 						$('#coreeventos').empty();
 						$.mobile.changePage("#menu");
-
 						isAuth = true;          
-
 					}
 					else {
 						alert("El usuario o la clave no son válidos");
@@ -68,35 +66,35 @@ function ValidarLogin() {
 	});
 	    
 }
-
 function ListarComidas(data){
     var i = 0;
     $("#coreeventos").empty();
-alert("cedula2="+data['CedConsumidor']);
  while (i < data.length) {     
-
          var datosReserva = {
                NitProveedor: data[i].NitProveedor,
-               CedConsumidor: data[i].CedConsumidor,
+               CedConsumidor: dataGlobal.CedConsumidor,
                CodServicio: data[i].CodServicio,
                CodProducto: data[i].CodProducto
            };
-		   alert("cedula="+data[0]['CedConsumidor']);
-
+		   var imgp;
+		   if (data[i].ImaProducto==null){
+               imgp='images/nidisponible.png';		   
+		   }
+		   if(data[i].ImaProducto!=null){
+		      imgp=data[i].ImaProducto;	
+		   }
            // '<img src="comida.jpg" style="width:200px;heigth:200px" />' +
-
            var crearItem = '<li data-section="Widgets" data-filtertext="selectmenus custom native multiple optgroup disabled forms" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="false" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-up-d ui-btn-icon-right ui-li-has-arrow ui-li">' +
                 '<div class="ui-btn-inner ui-li">' +               
                 '<div class="ui-btn-text">' + data[i].DesProducto +
                 '<br>' +
-                '<button id = "vcedu3"  onclick="ConfirmarReserva(' + "'" + data[i].NitProveedor + "','" + data[i].CedConsumidor + "','" + data[i].CodServicio + "','" + data[i].CodProducto + "','" + data[i].DesProducto + "','" + data[i].ImaProducto + "','" + data[i].CanAsignada + "','" + data[i].ConReservasServicioConsumidor + "'" + ');" class="ui-btn-text">Reserva</button>' +
+                '<button id = "vcedu3"  onclick="ConfirmarReserva(' + "'" + data[i].NitProveedor + "','" + dataGlobal.CedConsumidor + "','" + data[i].CodServicio + "','" + data[i].CodProducto + "','" + data[i].DesProducto + "','" + data[i].ImaProducto + "','" + data[i].CanAsignada + "','" + data[i].ConReservasServicioConsumidor + "'" + ');" style="background-color: #fff;font-size: 16px;clear: left;height: 35px;width: 100%;margin-right: 10px;padding: 5px; float: center;border-width: 1px;border-color: #7f7f7f;border-style: dashed;">Reserva</button>' +
                 '</div>' +
+				'<button id = "vcedu"  onclick="mostrarImagen('+"'"+imgp+"'"+');" style="background-color: #fff;font-size: 16px;clear: left;height: 35px;width: 30%;margin-right: 10px;padding: 5px; float: center;border-width: 1px;border-color: #7f7f7f;border-style: dashed;">Ver imagen</button>'+
                 '</div>' +
                 '</li>' +
                 '<br>';
-
-           $("#coreeventos").append(crearItem);         
-		  
+           $("#coreeventos").append(crearItem);         		  
 		 i=i+1;
    }
 }
@@ -387,7 +385,6 @@ function closeapp(){
 }
 
 function ConfirmarReserva(NitProveedor, CedConsumidor, CodServicio, CodProducto, Producto, Img, CanAsignada, ConReservasServicioConsumidor) {
-    alert("la cedula consumidor="+CedConsumidor);
     if (ConReservasServicioConsumidor == CanAsignada) {
         alert('La reserva ya ha sido asignada');
         return false;
@@ -440,7 +437,6 @@ function Servicios() {
     $.mobile.changePage("#ServiciosDisponibles");
 }
 
-
 function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServicio, RanIniDisConsumo, RanIniDisServicio, CanAsignada) {
     //Se válida la fecha
     var fechaSistema = new Date();
@@ -472,7 +468,7 @@ function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServici
         {
             //DataTemp = data;
 			
-			alert("cedula full="+data.CedConsumidor[0]);
+			//alert("cedula full="+data.CedConsumidor[0]);
             ListarComidas(data);
         },
         error: function (data) {
@@ -499,8 +495,6 @@ function GuardarReserva() {
     var fechaReservaTemp = new Date(fechaReserva);
     //var fechaReservaTemp =fechaReserva;
 	
-	
-	
     // Validar Rango de Fecha Reservada
     var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
     var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
@@ -514,31 +508,19 @@ function GuardarReserva() {
         alert('El menú solo se puede reservar entre el ' + getDateString(fechasReservasValidas.RanIniDisConsumo) + ' y el ' + getDateString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
-
     // Validar Rango de Hora Reserva
 	//Hora actual
-    //var horaReservaTemp = ExtraerHora(fechaReservaTemp);
-	
     var horaIni = ExtraerHora(fechasReservasValidas.RanIniDisConsumo);
     var horaFin = ExtraerHora(fechasReservasValidas.RanFinDisConsumo);
-	
-    //var isValid = ComparFechasVersion2(horareservas, horaIni, horaFin);
-	
+
 	var isValidh = CompararHora(fechaReserva,fechaFin,fechaIni,horaFin,horaIni,horareservas);
-	alert("resultado2 horas="+isValidh+" hora de reserva="+horareservas+" hora inicial="+horaIni+" hora final="+horaFin+" fechafinal="+fechaFin+" fecha inicial="+fechaIni+" fecha reserva="+fechaReserva);
-	
 	
     if (!isValidh) {
         alert('El menú solo se puede reservar entre las horas: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) + ' y ' + getHourString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
-
     var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaenvioreserva;
-     
-	 alert("confirmar reserva="+confirmarfechaReserva);
-	
-	alert("nit="+seleccionReserva.NitProveedor+" CedConsumidor="+seleccionReserva.CedConsumidor+" codservicio="+seleccionReserva.CodServicio+" CodProducto="+seleccionReserva.CodProducto+" fecha reserva="+confirmarfechaReserva);
-	
+	//alert("nit="+seleccionReserva.NitProveedor+" CedConsumidor="+seleccionReserva.CedConsumidor+" codservicio="+seleccionReserva.CodServicio+" CodProducto="+seleccionReserva.CodProducto+" fecha reserva="+confirmarfechaReserva);
     var datosReserva = {
         "NitProveedor": seleccionReserva.NitProveedor,
         "CedConsumidor": seleccionReserva.CedConsumidor,
@@ -547,9 +529,6 @@ function GuardarReserva() {
         "FecReserva": confirmarfechaReserva,
         "NumReservas": 1,
         "Message": null}
-   
-    alert("llego a guardar el consumidor");
-	
     var url = siteCustomer + '/Reserva/Add';
     $.ajax({ // ajax call starts
         url: url, // JQuery loads serverside
@@ -564,16 +543,19 @@ function GuardarReserva() {
         data: JSON.stringify(datosReserva),
         success: function (data) // Variable data contains the data we get from serverside
         {
-            alert('La reserva se realizo con éxito');
+		    if(data.CedConsumidor==0){
+			   alert("La reserva ya fue realizada")
+			}
+			if(data.CedConsumidor!=0){
+			   alert('La reserva se realizo con éxito');
+			}
         },
         error: function (data) {
             alert("Error en la conexión");
         }
     });
 }
-
 function ExtraerHora(horaconver) {
-    alert("hora a convertir="+horaconver);
     //var horavl = horaconver.getHours() + horaconver.getMinutes() + "00";
     //sacar hora
     var dathoras = horaconver.split(":");
@@ -679,7 +661,10 @@ function generarQR() {
 
     $.mobile.changePage("#mostrarQR");
 }
-
+function mostrarImagen(imgpro) {
+    $("#ProdImg").attr("src", imgpro);
+    $.mobile.changePage("#mostrarProducto");
+}
 
 function Historico() { 
 

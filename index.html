@@ -258,7 +258,7 @@
 <!-- home -->
 <div data-role="page" id="home" class="contenido">
 	<div data-role="header"><div class="logobar" align="center"></div>
-		<h1>Bienvenido</h1>
+		<h1>Productos</h1>
 	</div>
     <br><br>
     <div data-role="content" id="coreeventos" name ="coreenventos">	
@@ -365,17 +365,16 @@
 	<div data-role="content">	
 	<br>
     <div data-role="content">	
-	Seleccionar Fecha:	
+	<div class="colortext"> Seleccionar Fecha:</div>	
     <input type="text" name="date3" id="date3" class="mobiscroll" />
     
-	<p id="DesProducto"></p>    
+	<p id="DesProducto" class="colortext"></p><br>    
 	<button id = "vcedu"  onclick="GuardarReserva();" class="ui-btn-text">Confirmar</button>
-	<br>
+	<br><br><br>
 	<button id = "vcedu"  onclick="closeapp();" class="ui-btn-text">Cerrar</button>
 	</div>
 	</div>	
 </div>
-
 <!-- Mostrar QR-->
 <div data-role="page" id="mostrarQR" class="contenido">
 	<div data-role="header"><div class="logobar" align="center"></div>
@@ -387,7 +386,17 @@
         </div>	 
     </div>   
 </div>
-
+<!-- Mostrar Imagen del producto-->
+<div data-role="page" id="mostrarProducto" class="contenido">
+	<div data-role="header"><div class="logobar" align="center"></div>
+		<h1>Imagen del producto</h1>
+	</div> 
+    <div data-role="content">
+        <div id="Div2img" align="center" style="width:100%">
+            <img id="ProdImg" src="" />
+        </div>	 
+    </div>   
+</div>
 <!-- Historico-->
 <div data-role="page" id="historico" class="contenido">
     <div data-role="header"><div class="logobar" align="center"></div>
