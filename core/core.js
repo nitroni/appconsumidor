@@ -19,7 +19,8 @@ var fechasReservasValidas = {};
 var DataTemp = {};
 var dataGlobal="";
 var siteCustomer = 'http://181.48.24.156:8183/Servicios/api';
-
+var fechaGlobalInicioServ="";
+var fechaGlobalFinServ="";
 window.onhashchange = function () {
     if (isAuth == false) {
         document.location.href = "#inicio";
@@ -399,8 +400,8 @@ function ConfirmarReserva(NitProveedor, CedConsumidor, CodServicio, CodProducto,
         Img: Img
     };
 
-    $("#DesProducto").text(Producto);
-    
+    //$("#DesProducto").text(' Producto: '+Producto);
+    $("#idproducto").val(Producto);
 	$.mobile.changePage("#confirmarReserva");
 }
 
@@ -441,17 +442,27 @@ function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServici
     //Se válida la fecha
     var fechaSistema = new Date();
     var fechaActual = fechaSistema.getFullYear() + '' + ("0" + (fechaSistema.getMonth() + 1)).slice(-2) + '' + fechaSistema.getDate();
-
+    //Capturo la fecha de inicio del consumo de forma global
+	fechaGlobalInicioServ=RanIniDisConsumo;
+	var newfechaglo= new Date(fechaGlobalInicioServ);
+	var newfechamostrar= newfechaglo.getFullYear() + '/' + ("0" + (newfechaglo.getMonth() + 1)).slice(-2) + '/' + newfechaglo.getDate();
+	var newfechahoraini=ExtraerHoraConForma(fechaGlobalInicioServ);
+	
+	//Capturo la fecha fin del consumo para sacarle la hora
+	fechaGlobalFinServ=RanFinDisConsumo;
+	var newfechafincon= new Date(fechaGlobalInicioServ);
+	var newhorafinmistrar=ExtraerHoraConForma(fechaGlobalFinServ);
+	
     var fechaIni = ExtraerFecha(RanIniDisServicio);
     var fechaFin = ExtraerFecha(RanFinDisServicio);
 
     var isValid = ComparFechasVersion2(fechaActual, fechaIni, fechaFin);
-
+	
     if (!isValid) {
-        alert('La reserva solo se puede realizar entre el ' + getDateString(RanFinDisServicio) + ' y el' + getDateString(RanIniDisServicio));
+        alert('La reserva solo se puede realizar entre el ' + getDateString(RanIniDisServicio) + ' y el ' + getDateString(RanFinDisServicio));
         return false;
-    }   
-
+    }
+     
     fechasReservasValidas = {
         RanFinDisConsumo: RanFinDisConsumo,
         RanIniDisConsumo: RanIniDisConsumo
@@ -475,14 +486,15 @@ function verMenus(CedConsumidor, CodServicio, RanFinDisConsumo, RanFinDisServici
             alert("Error en la conexión");
         }
     });
-    
+	$("#fechainico").val(newfechamostrar+' ('+newfechahoraini+' - '+newhorafinmistrar+')');
+	//$("#horasconsumo").text('Entre la hora : '+newfechahoraini+' y hasta la hora: '+newhorafinmistrar);
     $.mobile.changePage("#home");
 }
 
 function GuardarReserva() {
-
     // Validar Fecha Reserva Ingresada
-    var fechaReserva = $("#date3").val();
+    //var fechaReserva = $("#date3").val();
+	var fechaReserva =  fechaGlobalInicioServ;
 	
 	//validando hora
     //var horaReserva = $("#horaReserva").val();
@@ -497,9 +509,11 @@ function GuardarReserva() {
 	
     // Validar Rango de Fecha Reservada
     var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
-    var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
-	var horaenvioreserva= ("0" + (fechaReservaTemp.getHours())).slice(-2)+':'+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+':'+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
+	//var horareservas=("0" + (fechaReservaTemp.getHours())).slice(-2)+''+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+''+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
+	//var horaenvioreserva= ("0" + (fechaReservaTemp.getHours())).slice(-2)+':'+("0" + (fechaReservaTemp.getMinutes())).slice(-2)+':'+("0" + (fechaReservaTemp.getSeconds())).slice(-2);
 	
+	var horareservas=ExtraerHora(fechaGlobalInicioServ);
+	var horaenvioreserva=ExtraerHoraConForma(fechaGlobalInicioServ);
     var fechaIni = ExtraerFecha(fechasReservasValidas.RanIniDisConsumo);	
     var fechaFin = ExtraerFecha(fechasReservasValidas.RanFinDisConsumo); 
     var isValid = ComparFechasVersion2(fechaReserva, fechaIni, fechaFin);
@@ -519,7 +533,9 @@ function GuardarReserva() {
         alert('El menú solo se puede reservar entre la hora: ' + getHourString(fechasReservasValidas.RanIniDisConsumo) +' de la fecha '+ getDateString(fechasReservasValidas.RanFinDisConsumo)+' y hora: ' + getHourString(fechasReservasValidas.RanFinDisConsumo)+" de la fecha: "+getDateString(fechasReservasValidas.RanFinDisConsumo));
         return false;
     }
-    var confirmarfechaReserva = (fechaReservaTemp.getMonth() + 1) + '/' + fechaReservaTemp.getDate() + '/' + fechaReservaTemp.getFullYear() + ' ' + horaenvioreserva;
+	 var fechaReserva = fechaReservaTemp.getFullYear() + '' + ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '' + ("0" + (fechaReservaTemp.getDate() )).slice(-2);
+    
+    var confirmarfechaReserva = ("0" + (fechaReservaTemp.getMonth() + 1)).slice(-2) + '/' + ("0" + (fechaReservaTemp.getDate())).slice(-2) + '/' + fechaReservaTemp.getFullYear() + ' ' + horaenvioreserva;
 	//alert("nit="+seleccionReserva.NitProveedor+" CedConsumidor="+seleccionReserva.CedConsumidor+" codservicio="+seleccionReserva.CodServicio+" CodProducto="+seleccionReserva.CodProducto+" fecha reserva="+confirmarfechaReserva);
     var datosReserva = {
         "NitProveedor": seleccionReserva.NitProveedor,
@@ -563,6 +579,17 @@ function ExtraerHora(horaconver) {
     var minini = dathoras[1];
     var hini = dathoras[0].substring(13, 11);
     var horavl = hini + minini + segini;
+    
+    return horavl;
+}
+function ExtraerHoraConForma(horaconverf) {
+    //var horavl = horaconver.getHours() + horaconver.getMinutes() + "00";
+    //sacar hora
+    var dathoras = horaconverf.split(":");
+    var segini = dathoras[2];
+    var minini = dathoras[1];
+    var hini = dathoras[0].substring(13, 11);
+    var horavl = hini +':'+ minini +':'+ segini;
     
     return horavl;
 }
@@ -696,7 +723,7 @@ function ListarHistorico(dataHistorico) {
     var crearItem = '<tr>' +
             '<th>Fecha</th>' +
             '<th>Hora</th>' +
-            '<th>Descripción</th>' +           
+            '<th>Descripción</th>' +
             '</tr>';
 
     $("#verHistorico").append(crearItem);      
